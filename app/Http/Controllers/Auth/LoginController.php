@@ -16,6 +16,8 @@ class LoginController extends Controller
 
     protected $decayMinutes = 1;//超时时间
     protected $maxAttempts = 5;//允许最大登录失败次数
+
+
     /**
      * Where to redirect users after login.
      *
@@ -23,58 +25,14 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
-
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * LoginController constructor.
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
-    }
+        $this->maxAttempts = config('auth.max_attempts',5);
+        $this->decayMinutes = config('auth.decay_minutes',1);
 
-
-
-
-    /**
-     * Redirect the user after determining they are locked out.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return void
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    protected function sendLockoutResponse(Request $request)
-    {
-        $seconds = $this->limiter()->availableIn(
-            $this->throttleKey($request)
-        );
-
-        throw ValidationException::withMessages([
-            $this->username() => [Lang::get('auth.throttle', ['seconds' => $seconds])],
-        ])->status(423);
-    }
-
-
-    /**
-     * Get the throttle key for the given request.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return string
-     */
-    protected function throttleKey(Request $request)
-    {
-        return Str::lower($request->input($this->username())) . '|' . $request->ip();
-    }
-
-    /**
-     * Get the rate limiter instance.
-     *
-     * @return \Illuminate\Cache\RateLimiter
-     */
-    protected function limiter()
-    {
-        return app(RateLimiter::class);
     }
 
     /**
@@ -91,100 +49,51 @@ class LoginController extends Controller
      * Handle a login request to the application.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      * @throws ValidationException
      */
     public function login(Request $request)
     {
+        $usernameKey = 'email';
         $this->validate($request, [
-            $this->username() => 'required|string',
+            $usernameKey => 'required|string',
             'password'        => 'required|string',
         ]);
+
+        $throttleKey = Str::lower($request->input($usernameKey)) . '|' . $request->ip();
+        $limiter = app(RateLimiter::class);
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
-        if ($this->limiter()->tooManyAttempts(
-            $this->throttleKey($request), $this->maxAttempts, $this->decayMinutes
+        if ($limiter->tooManyAttempts(
+            $throttleKey, $this->maxAttempts, $this->decayMinutes
         )) {
             event(new Lockout($request));
-
-            return $this->sendLockoutResponse($request);
+            $seconds = $limiter->availableIn($throttleKey);
+            throw ValidationException::withMessages([
+                $usernameKey => [Lang::get('auth.throttle', ['seconds' => $seconds])],
+            ])->status(423);
         }
 
-        if (
-            $this->guard()->attempt(
-                $request->only($this->username(), 'password'), $request->filled('remember')
-            )
-        ) {
-            return $this->sendLoginResponse($request);
+        if (Auth::guard()->attempt(
+            $request->only($usernameKey, 'password'), $request->filled('remember')
+        )) {
+            $request->session()->regenerate();
+            $limiter->clear($throttleKey);
+
+            return redirect()->intended($this->redirectTo);
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
 
-        $this->limiter()->hit(
-            $this->throttleKey($request), $this->decayMinutes
+        $limiter->hit(
+            $throttleKey, $this->decayMinutes
         );
 
         throw ValidationException::withMessages([
-            $this->username() => [trans('auth.failed')],
+            $usernameKey => [trans('auth.failed')],
         ]);
-    }
-
-
-    /**
-     * Send the response after the user was authenticated.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    protected function sendLoginResponse(Request $request)
-    {
-        $request->session()->regenerate();
-
-        $this->limiter()->clear($this->throttleKey($request));
-
-        return $this->authenticated($request, $this->guard()->user())
-            ?: redirect()->intended($this->redirectPath());
-    }
-
-    /**
-     * Get the post register / login redirect path.
-     *
-     * @return string
-     */
-    protected function redirectPath()
-    {
-        if (method_exists($this, 'redirectTo')) {
-            return $this->redirectTo();
-        }
-
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
-    }
-
-
-    /**
-     * The user has been authenticated.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  mixed $user
-     * @return mixed
-     */
-    protected function authenticated(Request $request, $user)
-    {
-        //
-    }
-
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function username()
-    {
-        return 'email';
     }
 
     /**
@@ -195,20 +104,10 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $this->guard()->logout();
+        Auth::guard()->logout();
 
         $request->session()->invalidate();
 
         return redirect('/');
-    }
-
-    /**
-     * Get the guard to be used during authentication.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard();
     }
 }

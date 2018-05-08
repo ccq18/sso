@@ -5,20 +5,17 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 
 class ForgotPasswordController extends Controller
 {
-
-
     /**
-     * Create a new controller instance.
+     * Where to redirect users after resetting their password.
      *
-     * @return void
+     * @var string
      */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
+    protected $redirectTo = '/home';
 
     /**
      * Display the form to request a password reset link.
@@ -42,48 +39,66 @@ class ForgotPasswordController extends Controller
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
-        $response = $this->broker()->sendResetLink(
+        $response = Password::broker()->sendResetLink(
             $request->only('email')
         );
 
         return $response == Password::RESET_LINK_SENT
-            ? $this->sendResetLinkResponse($response)
-            : $this->sendResetLinkFailedResponse($request, $response);
+            ? back()->with('status', trans($response))
+            :back()->withErrors(['email' => trans($response)]);
     }
 
 
     /**
-     * Get the response for a successful password reset link.
+     * Display the password reset view for the given token.
      *
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendResetLinkResponse($response)
-    {
-        return back()->with('status', trans($response));
-    }
-
-    /**
-     * Get the response for a failed password reset link.
+     * If no token is present, display the link request form.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param  \Illuminate\Http\Request $request
+     * @param  string|null $token
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function sendResetLinkFailedResponse(Request $request, $response)
+    public function showResetForm(Request $request, $token = null)
     {
-        return back()->withErrors(
-            ['email' => trans($response)]
+        return view('auth.passwords.reset')->with(
+            ['token' => $token, 'email' => $request->email]
         );
     }
 
     /**
-     * Get the broker to be used during password reset.
+     * Reset the given user's password.
      *
-     * @return \Illuminate\Contracts\Auth\PasswordBroker
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function broker()
+    public function reset(Request $request)
     {
-        return Password::broker();
+        $this->validate($request, [
+            'token'    => 'required',
+            'email'    => 'required|email',
+            'password' => 'required|confirmed|min:6',
+        ], []);
+
+        // Here we will attempt to reset the user's password. If it is successful we
+        // will update the password on an actual user model and persist it to the
+        // database. Otherwise we will parse the error and return the response.
+        $response = Password::broker()->reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                resolve(UserRepository::class)->resetPassword($user, $password);
+                Auth::guard()->login($user);
+
+            }
+        );
+
+        // If the password was successfully reset, we will redirect the user back to
+        // the application's home authenticated view. If there is an error we can
+        // redirect them back to where they came from with their error message.
+        return $response == Password::PASSWORD_RESET
+            ? redirect($this->redirectTo)
+                ->with('status', trans($response))
+            : redirect()->back()
+                        ->withInput($request->only('email'))
+                        ->withErrors(['email' => trans($response)]);
     }
 }

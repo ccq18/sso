@@ -4,6 +4,9 @@ namespace App\Repositories;
 
 
 use App\Models\User;
+use Hash;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class UserRepository
 {

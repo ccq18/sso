@@ -99,4 +99,8 @@ return [
         ],
     ],
 
+
+    'max_attempts'=>5,//允许最大登录失败次数
+    'decay_minutes'=>1,//超时时间
+
 ];

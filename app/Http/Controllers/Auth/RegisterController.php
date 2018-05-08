@@ -21,16 +21,6 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
-
 
     /**
      * Show the application registration form.
@@ -65,32 +55,9 @@ class RegisterController extends Controller
         ]);
         event(new Registered($user));
 
-        $this->guard()->login($user);
+        Auth::guard()->login($user);
 
-        return  redirect($this->redirectPath());
+        return  redirect($this->redirectTo);
     }
 
-    /**
-     * Get the guard to be used during registration.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard();
-    }
-
-    /**
-     * Get the post register / login redirect path.
-     *
-     * @return string
-     */
-    public function redirectPath()
-    {
-        if (method_exists($this, 'redirectTo')) {
-            return $this->redirectTo();
-        }
-
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
-    }
 }
