@@ -14,14 +14,16 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/auth-token', 'HomeController@authToken')->name('authToken');
 
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/api/login', 'Auth\LoginController@loginApi');
 
 Route::group(['middleware' => 'guest'], function () {
     //登录
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('login', 'Auth\LoginController@login');
+
     //注册
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'Auth\RegisterController@register');
@@ -37,4 +39,4 @@ Route::group(['middleware' => 'guest'], function () {
 //
 // Auth::routes();
 //
-// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');

@@ -2,25 +2,38 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Mailer\UserMailer;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
+use App\Http\Controllers\Auth\Helpers\RedirectsUsers;
 
+
+/**
+ * Class RegisterController
+ * @package App\Http\Controllers\Auth
+ */
 class RegisterController extends Controller
 {
 
 
     /**
-     * Where to redirect users after registration.
+     * Create a new controller instance.
      *
-     * @var string
+     * @return void
      */
-    protected $redirectTo = '/home';
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
 
+
+
+
+    use RedirectsUsers;
 
     /**
      * Show the application registration form.
@@ -35,29 +48,72 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function register(Request $request)
     {
-        Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ])->validate();
+        $this->validator($request->all())->validate();
 
-        $data = $request->all();
-        $user = resolve(UserRepository::class)->register([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
-        event(new Registered($user));
+        event(new Registered($user = $this->create($request->all())));
 
-        Auth::guard()->login($user);
+        $this->guard()->login($user);
 
-        return  redirect($this->redirectTo);
+        return redirect($this->redirectPath());
     }
 
+    /**
+     * Get the guard to be used during registration.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard();
+    }
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+    }
+
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return User
+     */
+    protected function create(array $data)
+    {
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'avatar' => '/images/avatars/default.png',
+            'confirmation_token' => str_random(40),
+            'password' => bcrypt($data['password']),
+            'api_token' => str_random(60),
+            'settings' => ['city' => ''],
+        ]);
+
+        $this->sendVerifyEmailTo($user);
+        return $user;
+    }
+
+    /**
+     * @param $user
+     */
+    private function sendVerifyEmailTo($user)
+    {
+        (new UserMailer())->welcome($user);
+    }
 }

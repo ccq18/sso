@@ -66,7 +66,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'my-eloquent',
             'model' => \App\Models\User::class,
         ],
 
@@ -101,6 +101,6 @@ return [
 
 
     'max_attempts'=>5,//允许最大登录失败次数
-    'decay_minutes'=>1,//超时时间
+    'decay_minutes'=>1,//超过失败次数后 1分钟内禁止登录
 
 ];
