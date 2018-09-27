@@ -2,36 +2,36 @@
 
 namespace Ccq18\Auth;
 
-
 class AuthHelper
 {
 
     public function getJumpUrlWithToken()
     {
-        $token = $this->generateAuthToken();
+        $token = md5(uniqid() . rand());
+        \Cache::put($this->key($token), auth()->user(), 3);
         $authUrl = session()->get('authUrl');
-        //request()->get('authUrl');
         $fromUrl = session()->get('fromUrl');
+
         return $this->buildUrl($authUrl, ['fromUrl' => $fromUrl, 'token' => $token]);
-    }
-
-    public function generateAuthToken()
-    {
-        $token = md5(uniqid().rand());
-        \Cache::put('auth_' . $token, auth()->user(), 3);
-
-        return $token;
     }
 
     public function getUserByToken($token)
     {
-        $rs = \Cache::get('auth_' . $token);
-        \Cache::forget('auth_' . $token);
+        $rs = \Cache::get($this->key($token));
+        \Cache::forget($this->key($token));
+
         return $rs;
     }
 
+    protected function key($token)
+    {
+        return 'auth_' . $token;
+    }
 
-    function buildUrl($path, $parameters = [])
+
+
+
+    protected function buildUrl($path, $parameters = [])
     {
 
         $output = $this->getUrlParams($path);
@@ -40,7 +40,7 @@ class AuthHelper
         return url(ltrim($this->clearUrlcan($path), '\/') . (empty($parm_str) ? "" : '?' . $parm_str));
     }
 
-    function getUrlParams($path)
+    protected function getUrlParams($path)
     {
         $info = parse_url($path);
         $params = isset($info['query']) ? $info['query'] : "";
@@ -49,7 +49,7 @@ class AuthHelper
         return $output;
     }
 
-    function clearUrlcan($url)
+    protected function clearUrlcan($url)
     {
         if (strpos($url, '?') !== false) {
             $url = substr($url, 0, strpos($url, '?'));
