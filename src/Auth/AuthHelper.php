@@ -12,7 +12,7 @@ class AuthHelper
         $authUrl = session()->get('authUrl');
         $fromUrl = session()->get('fromUrl');
 
-        return $this->buildUrl($authUrl, ['fromUrl' => $fromUrl, 'token' => $token]);
+        return build_url($authUrl, ['fromUrl' => $fromUrl, 'token' => $token]);
     }
 
     public function getUserByToken($token)
@@ -31,31 +31,6 @@ class AuthHelper
 
 
 
-    protected function buildUrl($path, $parameters = [])
-    {
 
-        $output = $this->getUrlParams($path);
-        $parm_str = http_build_query(array_merge($output, $parameters));
-
-        return url(ltrim($this->clearUrlcan($path), '\/') . (empty($parm_str) ? "" : '?' . $parm_str));
-    }
-
-    protected function getUrlParams($path)
-    {
-        $info = parse_url($path);
-        $params = isset($info['query']) ? $info['query'] : "";
-        parse_str($params, $output);
-
-        return $output;
-    }
-
-    protected function clearUrlcan($url)
-    {
-        if (strpos($url, '?') !== false) {
-            $url = substr($url, 0, strpos($url, '?'));
-        }
-
-        return $url;
-    }
 
 }
