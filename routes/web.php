@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/auth-token', 'HomeController@authToken')->name('authToken');
-Route::post('logout', 'AuthController@logout')->name('logout');
+Route::any('/logout', 'AuthController@logout')->name('logout');
 Route::group(['middleware' => 'guest'], function () {
     //登录
     Route::get('login', 'AuthController@showLoginForm')->name('login');

@@ -3,9 +3,7 @@
 namespace Ccq18\Auth;
 
 use Illuminate\Cache\RateLimiter;
-use App\Http\Controllers\Controller;
 use Auth;
-use Ccq18\Auth\AuthHelper;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
@@ -18,11 +16,11 @@ class LoginService
     protected $maxAttempts;
     protected $decayMinutes;
 
-    public function __construct($usernameKey = 'email', $maxAttempts = 5, $decayMinutes = 1)
+    public function __construct($usernameKey = 'email')
     {
         $this->usernameKey = $usernameKey;
-        $this->maxAttempts = $maxAttempts;
-        $this->decayMinutes = $decayMinutes;
+        $this->maxAttempts = config('auth.max_attempts');
+        $this->decayMinutes =  config('auth.decay_minutes');;
     }
     //usernameKey对应的键值
     //password
