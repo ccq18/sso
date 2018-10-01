@@ -3,6 +3,7 @@
 namespace Ccq18\Auth;
 
 
+use App\Models\Repositories\UserRepository;
 use App\Models\User;
 use Auth;
 use Illuminate\Auth\Events\Registered;
@@ -18,15 +19,7 @@ class RegisterService
      */
     public function registerUser(array $data)
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'avatar' => '/images/avatars/default.png',
-            'confirmation_token' => str_random(40),
-            'password' => bcrypt($data['password']),
-            'api_token' => str_random(60),
-            'settings' => ['city' => ''],
-        ]);
+        $user = resolve(UserRepository::class)->register($data);
         //todo
         // (new UserMailer())->welcome($user);
 

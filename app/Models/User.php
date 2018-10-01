@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as UserAuth;
+use App\Models\UserAuth\Authenticatable;
+use App\Models\UserAuth\Authorizable;
+use App\Models\UserAuth\CanResetPassword;
+use App\Models\UserAuth\HasDatabaseNotifications;
+use App\Models\UserAuth\NotifiyContract;
+use App\Models\UserAuth\RoutesNotifications;
 
+use Ccq18\Notify\NotifyContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class User
@@ -32,21 +38,30 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * @property string $role
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
  */
-class User extends UserAuth implements
+class User  extends Model implements
     AuthenticatableContract,
     AuthorizableContract,
-    CanResetPasswordContract
+    CanResetPasswordContract,
+    NotifyContract
 {
-    use Notifiable;
-    protected $table='users';
+
+    use Authenticatable, Authorizable, CanResetPassword;
+    use HasDatabaseNotifications, RoutesNotifications;
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
-     *
+     * 
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'avatar',
+        'confirmation_token',
+        'password',
+        'api_token',
+        'settings',
     ];
 
     /**
@@ -55,8 +70,16 @@ class User extends UserAuth implements
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'settings' => 'array'
+    ];
+
 
     /**
      * Get the e-mail address where password reset links are sent.

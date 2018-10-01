@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Ccq18\Auth\AuthHelper;
 use Ccq18\Auth\LoginService;
+use Ccq18\Auth\PasswordBroker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
@@ -99,14 +100,13 @@ class AuthController extends Controller
             'email'    => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ])->validate();
+        $data = $request->only([
+            'name',
+            'email',
+            'password',
+        ]);
 
-        resolve(RegisterService::class)
-            ->registerUser(
-                $request->only([
-                    'name',
-                    'email',
-                    'password',
-                ]));
+        resolve(RegisterService::class)->registerUser($data);
 
         return redirect(resolve(AuthHelper::class)->getJumpUrlWithToken());
     }
@@ -184,7 +184,16 @@ class AuthController extends Controller
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
-        $response = resolve(ResetPasswordService::class)->reset($request);
+
+        $credentials = $request->only(
+            'email', 'password', 'password_confirmation', 'token'
+        );
+        //重置密码
+        $response =  resolve(PasswordBroker::class)->reset($credentials, function ($user, $password) {
+                resolve(ResetPasswordService::class)->resetPassword($user, $password);
+                $this->guard()->login($user);
+            }
+        );
 
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
@@ -196,6 +205,5 @@ class AuthController extends Controller
                         ->withInput($request->only('email'))
                         ->withErrors(['email' => trans($response)]);
     }
-
 
 }

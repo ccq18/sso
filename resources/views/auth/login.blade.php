@@ -55,9 +55,9 @@
                                     登录
                                 </button>
 
-                                {{--<a class="btn btn-link" href="{{ route('password.request') }}">--}}
-                                    {{--忘记密码?--}}
-                                {{--</a>--}}
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    忘记密码?
+                                </a>
                             </div>
                         </div>
                     </form>
