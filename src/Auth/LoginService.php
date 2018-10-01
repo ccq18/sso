@@ -80,7 +80,7 @@ class LoginService
 
     protected function attemptLogin($username, $password, $hasRemember)
     {
-        $credentials = array_merge(compact('username', 'password', 'hasRemember'), ['is_active' => 1]);
+        $credentials = array_merge(['email'=>$username, $password=>'password'], ['is_active' => 1]);
 
         return Auth::guard()->attempt(
             $credentials, $hasRemember
