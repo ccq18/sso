@@ -9,14 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
 
-
 use Ccq18\Auth\RegisterService;
 use Illuminate\Support\Facades\Validator;
 
 
 use Ccq18\Auth\ResetPasswordService;
 
-class AuthController  extends Controller
+class AuthController extends Controller
 {
 
 
@@ -32,7 +31,7 @@ class AuthController  extends Controller
 
         $request->session()->invalidate();
 
-        return redirect( $request->get('fromUrl'));
+        return redirect($request->get('fromUrl'));
     }
 
 
@@ -59,8 +58,13 @@ class AuthController  extends Controller
             'password' => 'required|string',
         ]);
         $loginer = new LoginService('email');
-        $loginer->login($request);
-        $this->flash('欢迎回来！', 'success');
+        $username = $request->input('email');
+        $password = $request->input('password');
+        $hasRemember = $request->has('remember');
+        $ip = $request->ip();
+        $loginer->login($username, $password, $hasRemember, $ip);
+
+        // $this->flash('欢迎回来！', 'success');
 
         return redirect()->intended(resolve(AuthHelper::class)->getJumpUrlWithToken());
 
@@ -85,23 +89,30 @@ class AuthController  extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
     {
         Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'name'     => 'required|max:255',
+            'email'    => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ])->validate();
 
-        resolve(RegisterService::class)->registerUser($request->all());
+        resolve(RegisterService::class)
+            ->registerUser(
+                $request->only([
+                    'name',
+                    'email',
+                    'password',
+                ]));
 
         return redirect(resolve(AuthHelper::class)->getJumpUrlWithToken());
     }
 
     //ForgotPasswordController
+
     /**
      * Display the form to request a password reset link.
      *
@@ -115,7 +126,7 @@ class AuthController  extends Controller
     /**
      * Send a reset link to the given user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function sendResetLinkEmail(Request $request)

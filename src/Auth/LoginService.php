@@ -20,20 +20,21 @@ class LoginService
     {
         $this->usernameKey = $usernameKey;
         $this->maxAttempts = config('auth.max_attempts');
-        $this->decayMinutes =  config('auth.decay_minutes');;
+        $this->decayMinutes = config('auth.decay_minutes');;
     }
     //usernameKey对应的键值
     //password
     // remember
 
-    public function login(Request $request)
+    public function login($username, $password, $hasRemember, $ip)
     {
+
+
         $limiter = app(RateLimiter::class);
-        $throttleKey = Str::lower($request->input($this->usernameKey)) . '|' . $request->ip();;
+        $throttleKey = Str::lower($username) . '|' . $ip;
         //校验登录错误次数 超出限制则禁止登录
         if ($this->hasTooManyLoginAttempts($throttleKey)) {
-            event(new Lockout($request));
-
+            // event(new Lockout($request));
             $seconds = $limiter->availableIn(
                 $throttleKey
             );
@@ -43,7 +44,7 @@ class LoginService
             ])->status(423);
         }
         //尝试登录
-        if (!$this->attemptLogin($request)) {
+        if (!$this->attemptLogin($username, $password, $hasRemember)) {
 
             // If the login attempt was unsuccessful we will increment the number of attempts
             // to login and redirect the user back to the login form. Of course, when this
@@ -57,7 +58,7 @@ class LoginService
             ]);
         }
 
-        $request->session()->regenerate();
+        session()->regenerate();
         $limiter->clear($throttleKey);
     }
 
@@ -77,16 +78,12 @@ class LoginService
     }
 
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    protected function attemptLogin(Request $request)
+    protected function attemptLogin($username, $password, $hasRemember)
     {
-        $credentials = array_merge($request->only($this->usernameKey, 'password'), ['is_active' => 1]);
+        $credentials = array_merge(compact('username', 'password', 'hasRemember'), ['is_active' => 1]);
 
         return Auth::guard()->attempt(
-            $credentials, $request->has('remember')
+            $credentials, $hasRemember
         );
     }
 
