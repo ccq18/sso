@@ -18,15 +18,15 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $authUrl = request()->get('authUrl');//认证回调地址
+        // $authUrl = request()->get('authUrl');//认证回调地址
         $fromUrl = request()->get('fromUrl');//认证来源地址
-        if (!empty($authUrl)) {
-            session()->put('authUrl', $authUrl);
+        if (!empty($fromUrl)) {
+            // session()->put('authUrl', $authUrl);
             session()->put('fromUrl', $fromUrl);
 
         }
         if (Auth::guard($guard)->check()) {
-            $jumpUrl = resolve(AuthHelper::class)->getJumpUrlWithToken();
+            $jumpUrl = resolve(AuthHelper::class)->getJumpUrlWithToken($fromUrl);
             return redirect($jumpUrl);
         }
 

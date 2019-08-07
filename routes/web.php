@@ -9,8 +9,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('login', 'AuthController@showLoginForm')->name('login');
     Route::post('login', 'AuthController@login');
     //注册
-    // Route::get('register', 'AuthController@showRegistrationForm')->name('register');
-    // Route::post('register', 'AuthController@register');
+    Route::get('register', 'AuthController@showRegistrationForm')->name('register');
+    Route::post('register', 'AuthController@register');
     //忘记密码
     Route::group(['prefix' => 'password'], function () {
         //发送验证邮件

@@ -66,9 +66,9 @@ class AuthController extends Controller
         $loginer->login($username, $password, $hasRemember, $ip);
 
         // $this->flash('欢迎回来！', 'success');
-        $authUrl = session()->get('authUrl');
+        // $authUrl = session()->get('authUrl');
         $fromUrl = session()->get('fromUrl');
-        return redirect()->intended(resolve(AuthHelper::class)->getJumpUrlWithToken($authUrl, $fromUrl));
+        return redirect()->intended(resolve(AuthHelper::class)->getJumpUrlWithToken( $fromUrl));
 
 
     }
@@ -110,7 +110,7 @@ class AuthController extends Controller
         resolve(RegisterService::class)->registerUser($data);
         $authUrl = session()->get('authUrl');
         $fromUrl = session()->get('fromUrl');
-        return redirect(resolve(AuthHelper::class)->getJumpUrlWithToken($authUrl, $fromUrl));
+        return redirect(resolve(AuthHelper::class)->getJumpUrlWithToken($fromUrl));
     }
 
     //ForgotPasswordController
@@ -200,10 +200,9 @@ class AuthController extends Controller
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        $authUrl = session()->get('authUrl');
         $fromUrl = session()->get('fromUrl');
         return $response == Password::PASSWORD_RESET
-            ? redirect(resolve(AuthHelper::class)->getJumpUrlWithToken($authUrl, $fromUrl))
+            ? redirect(resolve(AuthHelper::class)->getJumpUrlWithToken($fromUrl))
                 ->with('status', trans($response))
             : redirect()->back()
                         ->withInput($request->only('email'))
