@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         $request->session()->invalidate();
 
-        return redirect($request->get('fromUrl'));
+        return redirect($request->get('fromUrl','/'));
     }
 
 
