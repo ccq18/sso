@@ -1,6 +1,6 @@
 # 单点登录项目
 ## 跳转登陆
-/login?sign=xxxxx&return_url=xxxx
+/login?
 登陆成功后会返回到return_url页面 并带上token=xxx
 
 
@@ -21,6 +21,7 @@ name:"aaa",
 登陆
 
 ps：返回内容应该根据业务需要做自定义扩展
+
 ## 签名
 
 
