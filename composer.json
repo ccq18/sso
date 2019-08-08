@@ -65,5 +65,11 @@
         "php artisan clear-compiled",
         "php artisan ide-helper:generate",
         "php artisan optimize"
-    ]
+    ],
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
+    }
 }
