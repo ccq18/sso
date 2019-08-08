@@ -18,10 +18,8 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        // $authUrl = request()->get('authUrl');//认证回调地址
         $fromUrl = request()->get('fromUrl');//认证来源地址
         if (!empty($fromUrl)) {
-            // session()->put('authUrl', $authUrl);
             session()->put('fromUrl', $fromUrl);
 
         }
