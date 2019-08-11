@@ -11,7 +11,7 @@ class AuthHelper
         \Cache::put($this->key($token), auth()->user(), 3);
 
 
-        return build_url($fromUrl, ['token' => $token]);
+        return build_url($fromUrl, ['ticket' => $token]);
     }
 
     public function getUserByToken($token)

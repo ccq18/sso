@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function authToken(Request $request)
     {
-        return resolve(AuthHelper::class)->getUserByToken($request->get('token'));
+        return resolve(AuthHelper::class)->getUserByToken($request->get('ticket'));
     }
 
     /**
