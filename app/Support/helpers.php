@@ -39,7 +39,7 @@ function login_url(){
 }
 
 function logout_url(){
-    return resolve(SsoAuth\AuthHelper::class)->getLogoutUrl();
+    return url('/sso/logout');
 }
 function register_url(){
     return resolve(SsoAuth\AuthHelper::class)->getRegisterUrl();
