@@ -53,13 +53,30 @@ class AuthHelper
 
     public function getUserById($id)
     {
-        return $this->http->getJson("/user/{$id}",['apiSecret'=>$this->apiSecret]);
+        return $this->getApi("/user/{$id}",[]);
     }
 
     public function getUserByTicket($ticket)
     {
-        return $this->http->getJson('auth-token', ['ticket' => $ticket,'apiSecret'=>$this->apiSecret]);
+        return $this->getApi('auth-token', ['ticket' => $ticket]);
     }
 
+    public function getSign($arr){
+        unset($arr['sign']);
+        ksort($arr);
+        $str = http_build_query($arr);
+        return md5($this->apiSecret.$str);
+    }
 
+    protected function getApi($url, $params = [] ){
+        $params['_r'] = uniqid();//加入随机干扰
+        $params['sign'] = $this->getSign($params);
+        return   $this->http->getJson($url, $params );
+    }
+
+    protected function postApi($url, $data = [], $params = []){
+        $params['_r'] = uniqid();//加入随机干扰
+        $params['sign'] = $this->getSign(array_merge($data,$params));
+        return   $this->http->postJson($url, $data, $params );
+    }
 }

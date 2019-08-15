@@ -120,3 +120,15 @@ name:"aaa",
 登陆成功后会返回到fromUrl页面 并带上ticket=xxx
 
 
+## 签名算法
+
+
+
+```
+  public function getSign($arr){
+        unset($arr['sign']);
+        ksort($arr);
+        $str = http_build_query($arr);
+        return md5($this->apiSecret.$str);
+    }
+```

@@ -2,7 +2,7 @@
 
 namespace Ccq18\Auth;
 
-class AuthHelper
+class AuthUtil
 {
 
     public function getJumpUrlWithToken($fromUrl)

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use Ccq18\Auth\AuthHelper;
+use Ccq18\Auth\AuthUtil;
 use Ccq18\Auth\LoginService;
 use Ccq18\Auth\PasswordBroker;
 use Illuminate\Http\Request;
@@ -71,7 +71,7 @@ class AuthController extends Controller
         // $this->flash('欢迎回来！', 'success');
         // $authUrl = session()->get('authUrl');
         $fromUrl = session()->get('fromUrl');
-        return redirect()->intended(resolve(AuthHelper::class)->getJumpUrlWithToken( $fromUrl));
+        return redirect()->intended(resolve(AuthUtil::class)->getJumpUrlWithToken( $fromUrl));
 
 
     }
@@ -113,7 +113,7 @@ class AuthController extends Controller
         resolve(RegisterService::class)->registerUser($data);
         $authUrl = session()->get('authUrl');
         $fromUrl = session()->get('fromUrl');
-        return redirect(resolve(AuthHelper::class)->getJumpUrlWithToken($fromUrl));
+        return redirect(resolve(AuthUtil::class)->getJumpUrlWithToken($fromUrl));
     }
 
     //ForgotPasswordController
@@ -205,7 +205,7 @@ class AuthController extends Controller
         // redirect them back to where they came from with their error message.
         $fromUrl = session()->get('fromUrl');
         return $response == Password::PASSWORD_RESET
-            ? redirect(resolve(AuthHelper::class)->getJumpUrlWithToken($fromUrl))
+            ? redirect(resolve(AuthUtil::class)->getJumpUrlWithToken($fromUrl))
                 ->with('status', trans($response))
             : redirect()->back()
                         ->withInput($request->only('email'))

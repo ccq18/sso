@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use Ccq18\Auth\AuthHelper;
+use Ccq18\Auth\AuthUtil;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +24,7 @@ class RedirectIfAuthenticated
 
         }
         if (Auth::guard($guard)->check()) {
-            $jumpUrl = resolve(AuthHelper::class)->getJumpUrlWithToken($fromUrl);
+            $jumpUrl = resolve(AuthUtil::class)->getJumpUrlWithToken($fromUrl);
             return redirect($jumpUrl);
         }
 
