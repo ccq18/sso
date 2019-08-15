@@ -1,3 +1,14 @@
+ 
+## 演示
+[演示1](http://test.auth.issue.pw/)  
+账号：348578429@qq.com 123456
+
+[演示2](http://test.service.issue.pw/)  
+账号：348578429@qq.com 123456
+[演示3](http://test.iword.issue.pw/)  
+账号：348578429@qq.com 123456
+
+ 
  ## sso安装
  重命名 .env.example 为.env
  配置 .env 文件
@@ -133,12 +144,3 @@ name:"aaa",
     }
 ```
 
-
-## 演示
-[演示1](http://test.auth.issue.pw/)
-账号：348578429@qq.com 123456
-
-[演示2](http://test.service.issue.pw/)
-账号：348578429@qq.com 123456
-[演示3](http://test.iword.issue.pw/)
-账号：348578429@qq.com 123456
