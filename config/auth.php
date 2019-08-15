@@ -45,6 +45,10 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+        'sso' => [
+            'driver' => 'session',
+            'provider' => 'sso_authorized_users',
+        ],
     ],
 
     /*
@@ -68,6 +72,9 @@ return [
         'users' => [
             'driver' => 'my-eloquent',
             'model' => \App\Models\User::class,
+        ],
+        'sso_authorized_users' => [
+            'driver' => 'sso_authorization',
         ],
 
         // 'users' => [
