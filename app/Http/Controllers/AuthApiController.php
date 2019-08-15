@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Ccq18\Auth\AuthUtil;
 use SsoAuth\AuthHelper;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,7 @@ class AuthApiController  extends Controller
      */
     public function authToken(Request $request)
     {
-        return resolve(AuthHelper::class)->getUserByToken($request->get('ticket'));
+        return resolve(AuthUtil::class)->getUserByToken($request->get('ticket'));
     }
 
     /**
