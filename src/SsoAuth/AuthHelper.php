@@ -10,10 +10,11 @@ class AuthHelper
     protected $http;
     protected $baseUrl;
 
-    public function __construct($authServer)
+    public function __construct($authServer,$apiSecret)
     {
         $this->http = new Http($authServer);
         $this->baseUrl = $authServer;
+        $this->apiSecret = $apiSecret;
     }
 
     private function getUrl($url)
@@ -52,11 +53,13 @@ class AuthHelper
 
     public function getUserById($id)
     {
-        return $this->http->getJson("/user/{$id}");
+        return $this->http->getJson("/user/{$id}",['apiSecret'=>$this->apiSecret]);
     }
 
     public function getUserByTicket($ticket)
     {
-        return $this->http->getJson('auth-token', ['ticket' => $ticket]);
+        return $this->http->getJson('auth-token', ['ticket' => $ticket,'apiSecret'=>$this->apiSecret]);
     }
+
+
 }

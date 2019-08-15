@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('ssohelper', function ($app) {
-            return new \SsoAuth\AuthHelper( env('APP_URL'));
+            return new \SsoAuth\AuthHelper( env('AUTH_SERVER'),env('API_SECRET'));
         });
         $this->app->alias('ssohelper',\SsoAuth\AuthHelper::class);
     }
