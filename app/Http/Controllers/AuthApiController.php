@@ -11,8 +11,9 @@ class AuthApiController  extends Controller
     public function __construct()
     {
         $sign =resolve(AuthHelper::class)->getSign(\request()->all());
+        $_sign = request('sign');
         if(request('sign') != $sign){
-            throw new \DomainException('签名校验不通过');
+            throw new \DomainException("签名校验不通过,request $_sign $sign");
         }
     }
 
