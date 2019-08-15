@@ -24,7 +24,6 @@ class HomeController extends Controller
      */
     public function home(Request $request)
     {
-        dump(auth()->check());
         return view('home');
     }
     /**
