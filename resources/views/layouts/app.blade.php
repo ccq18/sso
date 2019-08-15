@@ -42,9 +42,9 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">登录</a></li>
-                            <li><a href="{{ route('register') }}">注册</a></li>
+                        @if(Auth::guest())
+                            <li><a href="{{ login_url() }}">登录</a></li>
+                            <li><a href="{{ register_url() }}">注册</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="{{url('/home')}}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -57,7 +57,7 @@
                                             退出登录
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        <form id="logout-form" action="{{ logout_url() }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>

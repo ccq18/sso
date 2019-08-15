@@ -7,10 +7,10 @@
     "require": {
         "php": ">=7.0.0",
         "barryvdh/laravel-ide-helper": "^2.4",
-        "doctrine/dbal": "^2.7",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "guzzlehttp/guzzle": "^6.3",
         "predis/predis": "^1.1"
     },
     "require-dev": {
@@ -35,7 +35,7 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "Ccq18\\": "src"
+            "": "src"
         }
     },
     "extra": {

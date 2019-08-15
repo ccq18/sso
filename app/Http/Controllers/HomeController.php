@@ -8,14 +8,23 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function welcome(Request $request)
     {
+        return view('welcome');
+    }
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function home(Request $request)
+    {
+        dump(auth()->check());
         return view('home');
     }
     /**
