@@ -3,7 +3,7 @@
 
 Route::get('/auth-token', 'HomeController@authToken')->name('authToken');
 Route::get('/user/{id}', 'HomeController@getUser')->name('getUser');
-
+Route::any('/logout', 'AuthController@logout')->name('logout');
 Route::group(['middleware' => 'guest'], function () {
 
 
