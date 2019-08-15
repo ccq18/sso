@@ -43,6 +43,9 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
+        if(empty(request('fromUrl'))){
+            throw new \DomainException('链接非法');
+        }
         return view('auth.login');
     }
 
