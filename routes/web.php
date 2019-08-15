@@ -2,14 +2,14 @@
 
 
 Route::get('/', 'HomeController@welcome');
-Route::get('test', function (){
-    $r['r'] = uniqid();
-    $r['sign'] = resolve(\SsoAuth\AuthHelper::class)->getSign($r) ;
-
-    resolve(\SsoAuth\AuthHelper::class)->getUserById($r) ;
-
-    return ;
-});
+// Route::get('test', function (){
+//     $r['r'] = uniqid();
+//     $r['sign'] = resolve(\SsoAuth\AuthHelper::class)->getSign($r) ;
+//
+//     resolve(\SsoAuth\AuthHelper::class)->getUserById(1) ;
+//
+//     return ;
+// });
 
 
 // Route::any('/logout', 'AuthController@logout')->name('logout');
