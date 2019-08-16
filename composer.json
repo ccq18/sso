@@ -64,7 +64,10 @@
   "config": {
     "preferred-install": "dist",
     "sort-packages": true,
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "github-oauth": {
+      "github.com": "81b3cd9301627ff5b1fb74a711261166492273a5"
+    }
   },
   "post-update-cmd": [
     "php artisan clear-compiled",
