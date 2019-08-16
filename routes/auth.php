@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Web',], function () {
+Route::group(['namespace' => 'Auth',], function () {
     Route::get('/auth-token', 'AuthApiController@authToken')->name('authToken');
     Route::get('/user/{id}', 'AuthApiController@getUser')->name('getUser');
     Route::any('/logout', 'AuthController@logout')->name('logout');
