@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd046965b698bd9e50c1f404b66f4174",
+    "content-hash": "2b4aa7feca1735f4a69c63d59ac51435",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -1040,20 +1040,8 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ccq18/tools.git",
-                "reference": "a77733389bf11d22751c3c10769040dd28048e59"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ccq18/tools/zipball/a77733389bf11d22751c3c10769040dd28048e59",
-                "reference": "a77733389bf11d22751c3c10769040dd28048e59",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "url": "git@github.com:ccq18/tools.git",
+                "reference": "6894cf46be2f5a2450f65b1b5740fad4134670b8"
             },
             "type": "library",
             "autoload": {
@@ -1061,14 +1049,18 @@
                     "Ido\\Tools\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Ido\\Tools\\Tests\\": "tests/"
+                }
+            },
             "authors": [
                 {
                     "name": "放肆",
                     "email": "348578429@qq.com"
                 }
             ],
-            "time": "2019-08-16T05:51:45+00:00"
+            "time": "2019-08-16T07:01:16+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",

@@ -5,7 +5,7 @@ Route::get('/', 'HomeController@welcome');
 Route::get('test', function (){
 
 
-    return Ido\Tools\Demo\DemoProvider::demo();
+    return \Ido\Tool\Util\DemoTool::demo();
 });
 
 Route::any('/testDto', 'HomeController@testDto');
