@@ -5,7 +5,7 @@ namespace App\Providers;
 use Auth;
 use Ccq18\Auth\EloquentUserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use SsoAuth\SsoUserProvider;
+use Ido\Tools\SsoAuth\SsoUserProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {

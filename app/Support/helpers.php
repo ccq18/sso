@@ -35,12 +35,12 @@ if (!function_exists('clear_urlcan')) {
 }
 
 function login_url(){
-    return resolve(SsoAuth\AuthHelper::class)->getLoginUrl(route('home'));
+    return resolve(Ido\Tools\SsoAuth\AuthHelper::class)->getLoginUrl(route('home'));
 }
 
 function logout_url(){
     return url('/sso/logout');
 }
 function register_url(){
-    return resolve(SsoAuth\AuthHelper::class)->getRegisterUrl();
+    return resolve(Ido\Tools\SsoAuth\AuthHelper::class)->getRegisterUrl();
 }

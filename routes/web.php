@@ -2,20 +2,16 @@
 
 
 Route::get('/', 'HomeController@welcome');
-// Route::get('test', function (){
-//     $r['r'] = uniqid();
-//     $r['sign'] = resolve(\SsoAuth\AuthHelper::class)->getSign($r) ;
-//
-//     resolve(\SsoAuth\AuthHelper::class)->getUserById(1) ;
-//
-//     return ;
-// });
+Route::get('test', function (){
 
 
-// Route::any('/logout', 'AuthController@logout')->name('logout');
+    return Ido\Tools\Demo\DemoProvider::demo();
+});
+
+Route::any('/testDto', 'HomeController@testDto');
 Route::any('/sso/logout', function (){
     auth('sso')->logout();
-    return redirect(resolve(SsoAuth\AuthHelper::class)->getLogoutUrl(build_url('/')));
+    return redirect(resolve(Ido\Tools\SsoAuth\AuthHelper::class)->getLogoutUrl(build_url('/')));
 });
 Route::group(['middleware' => ['ssoauth']], function () {
     Route::get('/home', 'HomeController@home')->name('home');

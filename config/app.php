@@ -177,8 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        \Dto\DtoProvider::class,
-
+        \Ido\Tools\Dto\DtoProvider::class,
     ],
 
     /*
