@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Auth;
 use Ccq18\Auth\AuthUtil;
@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 
 use Ccq18\Auth\ResetPasswordService;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {

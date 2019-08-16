@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Ccq18\Auth\AuthUtil;
 use SsoAuth\AuthHelper;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class AuthApiController  extends Controller
 {

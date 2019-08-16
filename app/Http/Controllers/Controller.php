@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Dto\DtoService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -23,11 +24,26 @@ class Controller extends BaseController
         return Auth::guard();
     }
 
+
     public function response($data, $code=200, $message='success')
     {
         return response()->json(['data' => $data,'code'=>$code,'message'=>$message]);
 
     }
+
+
+
+    public function dto($data, $dtoProvider)
+    {
+        $data = resolve(DtoService::class)->transfer($data, $dtoProvider);
+        return $this->response($data);
+    }
+
+    // public function response($data, $code=200, $message='success')
+    // {
+    //     return response()->json(['data' => $data,'code'=>$code,'message'=>$message]);
+    //
+    // }
     public function redirectTo()
     {
         return $this->redirectTo;
