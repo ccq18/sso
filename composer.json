@@ -74,10 +74,6 @@
     "php artisan optimize"
   ],
   "repositories": [
-    {
-      "type": "git",
-      "url": "git@github.com:ccq18/tools.git"
-    },
      {
       "type": "composer",
       "url": "https://mirrors.aliyun.com/composer/"
