@@ -1041,12 +1041,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:ccq18/tools.git",
-                "reference": "63aecaf8aa1b7ab2425afb33737104bf2c51a4eb"
+                "reference": "45a528a6b51b7426a07adbce6dca77d52b4379ba"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Ido\\Tools\\": "src/"
+                    "Ido\\Tools\\": ""
                 }
             },
             "autoload-dev": {
@@ -1060,7 +1060,7 @@
                     "email": "348578429@qq.com"
                 }
             ],
-            "time": "2019-08-17T04:05:13+00:00"
+            "time": "2019-08-17T14:37:35+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
