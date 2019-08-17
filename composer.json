@@ -1,5 +1,5 @@
 {
-  "name": "laravel/laravel",
+  "name": "ccq18/sso",
   "description": "The Laravel Framework.",
   "keywords": [
     "framework",
@@ -23,6 +23,9 @@
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "~1.0",
     "phpunit/phpunit": "~6.0"
+  },
+  "replace": {
+    "ido/tools": "self.version"
   },
   "autoload": {
     "files": [
