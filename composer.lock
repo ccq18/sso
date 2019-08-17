@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd2853820445a276c6b318fd34715d53",
+    "content-hash": "60d462070c5c077916568a33a30d04f9",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -1034,6 +1034,33 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "ido/tools",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:ccq18/tools.git",
+                "reference": "63aecaf8aa1b7ab2425afb33737104bf2c51a4eb"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ido\\Tools\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Ido\\Tools\\Tests\\": "tests/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "放肆",
+                    "email": "348578429@qq.com"
+                }
+            ],
+            "time": "2019-08-17T04:05:13+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -6255,7 +6282,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "tymon/jwt-auth": 5
+        "tymon/jwt-auth": 5,
+        "ido/tools": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
