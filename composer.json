@@ -73,16 +73,10 @@
     "php artisan ide-helper:generate",
     "php artisan optimize"
   ],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "git@github.com:ccq18/tools.git"
-    },
-     {
+  "repositories": {
+    "packagist":{
       "type": "composer",
       "url": "https://mirrors.aliyun.com/composer/"
-    },
-    {"packagist": false}
-
-  ]
+    }
+  }
 }

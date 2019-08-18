@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60d462070c5c077916568a33a30d04f9",
+    "content-hash": "646e37382014ee220dad8daf1123a359",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -1040,8 +1040,20 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:ccq18/tools.git",
+                "url": "https://github.com/ccq18/tools.git",
                 "reference": "45a528a6b51b7426a07adbce6dca77d52b4379ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ccq18/tools/zipball/45a528a6b51b7426a07adbce6dca77d52b4379ba",
+                "reference": "45a528a6b51b7426a07adbce6dca77d52b4379ba",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "type": "library",
             "autoload": {
@@ -1049,11 +1061,7 @@
                     "Ido\\Tools\\": ""
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Ido\\Tools\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "放肆",
