@@ -144,3 +144,14 @@ name:"aaa",
     }
 ```
 
+
+
+
+#todo 
+ssoauth 从service 解耦
+简化使用
+
+## 提交sso-auth
+
+git subtree split --rejoin --prefix=src/Ccq18/SsoAuth --branch sso_auth_v1
+git push sso_auth_v1 sso-auth:master 

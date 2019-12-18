@@ -33,7 +33,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Ido\Tools\SsoAuth\Middleware\SsoAuthToken::class,
+            \Ccq18\SsoAuth\Middleware\SsoAuthToken::class,
 
         ],
         'auth' => [
@@ -61,7 +61,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'ssoauth' => \Ido\Tools\SsoAuth\Middleware\SsoAuthenticate::class,
+        'ssoauth' => \Ccq18\SsoAuth\Middleware\SsoAuthenticate::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

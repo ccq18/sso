@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Ccq18\Auth\AuthUtil;
-use Ido\Tools\SsoAuth\AuthHelper;
+use Ccq18\SsoAuth\AuthHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
