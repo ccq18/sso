@@ -19,7 +19,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "cq18\\SsoAuth\\Tests\\": "tests/"
+            "Ccq18\\SsoAuth\\Tests\\": "tests/"
         }
     }
 }

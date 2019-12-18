@@ -153,5 +153,8 @@ ssoauth 从service 解耦
 
 ## 提交sso-auth
 
+git subtree add --prefix src/Ccq18/SsoAuth  --squash sso-auth master
+git subtree push --prefix=src/Ccq18/SsoAuth  sso-auth master
+
 git subtree split --rejoin --prefix=src/Ccq18/SsoAuth --branch sso_auth_v1
 git push sso_auth_v1 sso-auth:master 
