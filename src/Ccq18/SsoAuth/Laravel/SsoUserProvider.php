@@ -17,10 +17,11 @@ class SsoUserProvider implements Provider
     public function retrieveById($identifier)
     {
 
-        $user=   resolve(\Ccq18\SsoAuth\AuthHelper::class)->getUserById($identifier);
-        if(empty($user)){
+        $user = resolve(\Ccq18\SsoAuth\AuthHelper::class)->getUserById($identifier);
+        if (empty($user)) {
             return null;
         }
+
         return new SsoUser($user);
 
     }
@@ -57,11 +58,15 @@ class SsoUserProvider implements Provider
      */
     public function retrieveByCredentials(array $credentials)
     {
-        $user = resolve(\Ccq18\SsoAuth\AuthHelper::class)->getUserByTicket($credentials['ticket']);
-        // dd('user',$user);
-        if(empty($user)){
+        if (empty($credentials['ticket'])) {
             return null;
         }
+        $user = resolve(\Ccq18\SsoAuth\AuthHelper::class)->getUserByTicket($credentials['ticket']);
+        // dd('user',$user);
+        if (empty($user)) {
+            return null;
+        }
+
         return new SsoUser($user);
 
     }
