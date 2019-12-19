@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Auth;
 use Ccq18\Auth\EloquentUserProvider;
+use Ccq18\SsoAuth\Laravel\SsoUserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use \Ccq18\SsoAuth\SsoUserProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -27,10 +27,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        \Auth::provider('my-eloquent', function ($app, $config) {
-            return new EloquentUserProvider($this->app['hash'], $config['model']);
-        });
-        Auth::provider('sso', function () {
+        // \Auth::provider('my-eloquent', function ($app, $config) {
+        //     return new EloquentUserProvider($this->app['hash'], $config['model']);
+        // });
+        Auth::provider('sso_authorization', function () {
             return new SsoUserProvider();
         });
     }
