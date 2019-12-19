@@ -64,13 +64,12 @@ AppServiceProvider
 $this->app->singleton('ssohelper', function ($app) {
       return new \SsoAuth\AuthHelper( env('AUTH_SERVER'),env('API_SECRET'));
 });
-$this->app->alias('ssohelper',\SsoAuth\AuthHelper::class);
+$this->app->alias('ssohelper',\SsoAuSsoAuthth\AuthHelper::class);
 ```
            
            
 2.middleware 加入
            
-\SsoAuth\Middleware\SsoAuthToken::class,
 
 'ssoauth' =>\SsoAuth\Middleware\SsoAuthenticate::class,
 
@@ -102,59 +101,15 @@ function register_url(){
     return resolve(SsoAuth\AuthHelper::class)->getRegisterUrl();
 }
 ```
-           
-## 用户信息获取接口
-/auth-token?ticket=xxxx
-
-返回信息:
-```
-{
-id:1,
-name:"aaa",
-...
-}
-```  
-## 根据id获取用户
-/user/{id}
-
-返回信息:
-```
-{
-id:1,
-name:"aaa",
-...
-}
-```
-
-## 跳转登陆
-/login?
-登陆成功后会返回到fromUrl页面 并带上ticket=xxx
-
-
-## 签名算法
-
-
-
-```
-  public function getSign($arr){
-        unset($arr['sign']);
-        ksort($arr);
-        $str = http_build_query($arr);
-        return md5($this->apiSecret.$str);
-    }
-```
+     
 
 
 
 
 #todo 
 ssoauth 从service 解耦
-简化使用
 
 ## 提交sso-auth
 
 git subtree add --prefix src/Ccq18/SsoAuth  --squash sso-auth master
 git subtree push --prefix=src/Ccq18/SsoAuth  sso-auth master
-
-git subtree split --rejoin --prefix=src/Ccq18/SsoAuth --branch sso_auth_v1
-git push sso_auth_v1 sso-auth:master 

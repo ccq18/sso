@@ -1,6 +1,6 @@
 <?php
 
-namespace Ccq18\SsoAuth;
+namespace Ccq18\SsoAuth\Laravel;
 
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Tymon\JWTAuth\Contracts\JWTSubject;

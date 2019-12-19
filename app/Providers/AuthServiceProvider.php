@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         \Auth::provider('my-eloquent', function ($app, $config) {
             return new EloquentUserProvider($this->app['hash'], $config['model']);
         });
-        Auth::provider('sso_authorization', function () {
+        Auth::provider('sso', function () {
             return new SsoUserProvider();
         });
     }

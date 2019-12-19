@@ -36,14 +36,9 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
         'api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'sso_authorized_users',
         ],
         'sso' => [
             'driver' => 'session',
@@ -69,18 +64,10 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'my-eloquent',
-            'model' => \App\Models\User::class,
-        ],
         'sso_authorized_users' => [
             'driver' => 'sso_authorization',
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

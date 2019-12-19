@@ -6,11 +6,9 @@
             "email": "348578429@qq.com"
         }
     ],
-    "require": {},
-    "config": {
-        "github-oauth": {
-            "github.com": "81b3cd9301627ff5b1fb74a711261166492273a5"
-        }
+    "require": {
+        "php": ">=7.0.0",
+        "guzzlehttp/guzzle": "^6.5"
     },
     "autoload": {
         "psr-4": {
